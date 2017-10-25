@@ -1,28 +1,16 @@
+// import * as firebase from 'firebase';
+const firebase = require('firebase');
+
 module.exports = {
-  getLists: function() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(ALL_LISTS);
-      }, 1000);
-    });
-  },
-  getUserList: function(userId) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(ALL_LISTS.filter(list => {
-          return list.userId === userId;
-        }));
-      }, 1000);
-    });
-  },
-  getList: function(id) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(ALL_LISTS.find(list => {
-          return list.id === id;
-        }));
+  getUserLists: function(userId) {
+    return firebase.database().ref('lists').orderByChild('userId').equalTo(userId).once('value').then(response => {
+      return response.val().filter(item => {
+        return item !== null;
       });
     });
+  },
+  updateList: function(list) {
+    return firebase.database().ref('lists')
   }
 }
 
