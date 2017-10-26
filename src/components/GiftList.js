@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import ListService from '../services/List.service';
+import Gifts from '../services/Gift.service';
 import GiftDetailDialog from './GiftDetailDialog';
 import List, {ListItem, ListItemSecondaryAction} from 'material-ui/List';
 import TextField from 'material-ui/TextField';
@@ -28,13 +29,14 @@ class GiftList extends Component {
       open: false,
       selectedIndex: ''
     };
-    this.ListService = ListService;
+    this.Gifts = Gifts;
     this.handleAddItem = this.handleAddItem.bind(this);
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleItemEdit = this.handleItemEdit.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleAddItem() {
@@ -43,7 +45,8 @@ class GiftList extends Component {
         id: '',
         name: '',
         description: '',
-        priority: false
+        priority: false,
+        listId: this.props.listId
       }])
     }));
   }
@@ -53,8 +56,10 @@ class GiftList extends Component {
     // const items = this.state.gifts.filter((item, i) => {
     //   return i !== index;
     // });
-    this.state.gifts.splice(index, 1)
-    this.setState({gifts: this.state.gifts});
+    this.Gifts.deleteGift(this.state.gifts[index]).then(gift => {
+      this.state.gifts.splice(index, 1)
+      this.setState({gifts: this.state.gifts});
+    });
   }
 
   handleCheck(index) {
@@ -76,7 +81,14 @@ class GiftList extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('Update gifts');
+    const promises = [];
+    this.state.gifts.forEach(gift => {
+      let giftPromise = gift.id ? Gifts.updateGift(gift) : Gifts.createGift(gift);
+      promises.push(giftPromise);
+    });
+    Promise.all(promises).then(response => {
+      this.setState({gifts: response});
+    });
   }
 
   handleItemEdit(index) {
@@ -89,20 +101,27 @@ class GiftList extends Component {
   handleRequestClose(item) {
     const state = {open: false};
     if(item) {
-      this.state.gifts[this.state.selectedIndex] = item;
-      state.gifts = this.state.gifts;
+      const promise = item.id ? this.Gifts.updateGift(item) : this.Gifts.createGift(item);
+      promise.then(item => {
+        this.state.gifts[this.state.selectedIndex] = item;
+        state.gifts = this.state.gifts;
+        this.setState(state);
+      });
+    } else {
+      this.setState(state);
     }
-    this.setState(state);
   }
 
-  componentDidMount() {
-    this.ListService.getUserLists(this.props.userId).then(response => {
-      if(response.length < 3) {
-        this.handleAddItem()
-      } else {
-        this.setState({gifts: response[0].gifts});
-      }
-    });
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.listId) {
+      this.Gifts.getListGifts(nextProps.listId).then(response => {
+        if(response.length < 1) {
+          this.handleAddItem();
+        } else {
+          this.setState({gifts: response});
+        }
+      });
+    }
   }
 
   render() {
