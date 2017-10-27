@@ -63,20 +63,15 @@ class GiftList extends Component {
   }
 
   handleCheck(index) {
-    // Without mutating state...
-    // const items = this.state.gifts.map((item, i) => {
-    //   if(i === index) {
-    //     item.priority = !item.priority;
-    //   }
-    //   return item;
-    // });
-    this.state.gifts[index].priority = !this.state.gifts[index].priority;
-    this.setState({gifts: this.state.gifts});
+    const items = this.state.gifts.slice(0);
+    items[index].priority = !items[index].priority;
+    this.setState({gifts: items});
   }
 
   handleNameChange(index, e) {
-    this.state.gifts[index].name = e.target.value;
-    this.setState({gifts: this.state.gifts});
+    const gifts = this.state.gifts.slice(0);
+    gifts[index].name = e.target.value;
+    this.setState({gifts: gifts});
   }
 
   handleSubmit(e) {
@@ -103,8 +98,8 @@ class GiftList extends Component {
     if(item) {
       const promise = item.id ? this.Gifts.updateGift(item) : this.Gifts.createGift(item);
       promise.then(item => {
-        this.state.gifts[this.state.selectedIndex] = item;
         state.gifts = this.state.gifts;
+        state.gifts[this.state.selectedIndex] = item;
         this.setState(state);
       });
     } else {

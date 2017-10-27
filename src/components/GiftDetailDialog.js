@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Dialog, {DialogActions, DialogTitle, DialogContent} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import Input from 'material-ui/Input';
 
 class GiftDetailDialog extends Component {
   constructor(props) {
