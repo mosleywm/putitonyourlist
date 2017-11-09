@@ -2,60 +2,22 @@
 const firebase = require('firebase');
 
 module.exports = {
+  createList: function(list) {
+    const newKey = firebase.database().ref().child('lists').push().key;
+    list.id = newKey;
+    return firebase.database().ref().child('lists').update({['/' + newKey]: list}).then(() => list);
+  },
   getUserLists: function(userId) {
     return firebase.database().ref('lists').orderByChild('userId').equalTo(userId).once('value').then(response => {
-      return response.val().filter(item => {
-        return item !== null;
-      });
+      const lists = [];
+      // parse firebase object response to normal array return
+      if(response.hasChildren) {
+        response.forEach(list => {lists.push(list.val());});
+      }
+      return lists;
     });
   },
   updateList: function(list) {
     return firebase.database().ref('lists')
   }
-}
-
-const ALL_LISTS = [
-  {
-    id: '1',
-    userId: '1',
-    listItems: [
-      {
-        id: '1',
-        name: 'Wii',
-        description: '',
-        priority: false
-      }, {
-        id: '2',
-        name: 'BotW',
-        description: '',
-        priority: false
-      }, {
-        id: '3',
-        name: 'MarioKart',
-        description: '',
-        priority: false
-      }
-    ]
-  }, {
-    id: '2',
-    userId: '2',
-    listItems: [
-      {
-        id: '4',
-        name: 'Skateboard',
-        description: '',
-        priority: false
-      }, {
-        id: '5',
-        name: 'Snowboard',
-        description: '',
-        priority: false
-      }, {
-        id: '6',
-        name: 'Rollerblades',
-        description: '',
-        priority: false
-      }
-    ]
-  }
-];
+};

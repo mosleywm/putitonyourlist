@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import ListService from '../services/List.service';
 import Gifts from '../services/Gift.service';
 import GiftDetailDialog from './GiftDetailDialog';
 import List, {ListItem, ListItemSecondaryAction} from 'material-ui/List';
@@ -11,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import Checkbox from 'material-ui/Checkbox';
+import Card, { CardActions, CardContent } from 'material-ui/Card';
 
 const styles = theme => ({
   container: {
@@ -37,17 +37,13 @@ class GiftList extends Component {
     this.handleItemEdit = this.handleItemEdit.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getNewGift = this.getNewGift.bind(this);
+    this.getListGifts = this.getListGifts.bind(this);
   }
 
   handleAddItem() {
     this.setState(prevState => ({
-      gifts: prevState.gifts.concat([{
-        id: '',
-        name: '',
-        description: '',
-        priority: false,
-        listId: this.props.listId
-      }])
+      gifts: prevState.gifts.concat([this.getNewGift(this.props.listId)])
     }));
   }
 
@@ -107,16 +103,32 @@ class GiftList extends Component {
     }
   }
 
+  getNewGift(listId) {
+    return {
+      id: '',
+      name: '',
+      description: '',
+      priority: false,
+      listId: listId
+    };
+  }
+
+  getListGifts(listId) {
+    this.Gifts.getListGifts(listId).then(response => {
+      if(response.length < 1) {
+        this.setState({gifts: [this.getNewGift(listId)]})
+      } else {
+        this.setState({gifts: response});
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.getListGifts(this.props.listId);
+  }
+
   componentWillReceiveProps(nextProps) {
-    if(nextProps.listId) {
-      this.Gifts.getListGifts(nextProps.listId).then(response => {
-        if(response.length < 1) {
-          this.handleAddItem();
-        } else {
-          this.setState({gifts: response});
-        }
-      });
-    }
+    this.getListGifts(nextProps.listId);
   }
 
   render() {
