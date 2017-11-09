@@ -10,6 +10,10 @@ import Home from './routes/Home';
 import Profile from './routes/Profile';
 
 const styles = theme => ({
+  container: {
+    'max-width': '980px',
+    margin: 'auto'
+  }
 });
 
 class App extends Component {
@@ -19,14 +23,17 @@ class App extends Component {
   }
 
   render() {
+    const classes = this.props.classes;
     return (
       <Router>
         <div>
           <Header />
-            <ProtectedRoute path='' component={Home}/>
-            <ProtectedRoute path='/:id' component={Home}/>
-            <Route path='/login' component={Login}/>
-            <ProtectedRoute path='/profile' component={Profile}/>
+            <div className={classes.container}>
+              <ProtectedRoute path='' component={Home}/>
+              <ProtectedRoute path='/:id' component={Home}/>
+              <Route path='/login' component={Login}/>
+              <ProtectedRoute path='/profile' component={Profile}/>
+            </div>
           <Footer />
         </div>
       </Router>

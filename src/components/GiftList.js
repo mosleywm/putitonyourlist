@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import ListService from '../services/List.service';
 import Gifts from '../services/Gift.service';
 import GiftDetailDialog from './GiftDetailDialog';
 import List, {ListItem, ListItemSecondaryAction} from 'material-ui/List';
@@ -11,6 +10,7 @@ import IconButton from 'material-ui/IconButton';
 import DeleteIcon from 'material-ui-icons/Delete';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 import Checkbox from 'material-ui/Checkbox';
+import Card, { CardActions, CardContent } from 'material-ui/Card';
 
 const styles = theme => ({
   container: {
@@ -37,17 +37,13 @@ class GiftList extends Component {
     this.handleItemEdit = this.handleItemEdit.bind(this);
     this.handleRequestClose = this.handleRequestClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.getNewGift = this.getNewGift.bind(this);
+    this.getListGifts = this.getListGifts.bind(this);
   }
 
   handleAddItem() {
     this.setState(prevState => ({
-      gifts: prevState.gifts.concat([{
-        id: '',
-        name: '',
-        description: '',
-        priority: false,
-        listId: this.props.listId
-      }])
+      gifts: prevState.gifts.concat([this.getNewGift(this.props.listId)])
     }));
   }
 
@@ -63,20 +59,15 @@ class GiftList extends Component {
   }
 
   handleCheck(index) {
-    // Without mutating state...
-    // const items = this.state.gifts.map((item, i) => {
-    //   if(i === index) {
-    //     item.priority = !item.priority;
-    //   }
-    //   return item;
-    // });
-    this.state.gifts[index].priority = !this.state.gifts[index].priority;
-    this.setState({gifts: this.state.gifts});
+    const items = this.state.gifts.slice(0);
+    items[index].priority = !items[index].priority;
+    this.setState({gifts: items});
   }
 
   handleNameChange(index, e) {
-    this.state.gifts[index].name = e.target.value;
-    this.setState({gifts: this.state.gifts});
+    const gifts = this.state.gifts.slice(0);
+    gifts[index].name = e.target.value;
+    this.setState({gifts: gifts});
   }
 
   handleSubmit(e) {
@@ -103,8 +94,8 @@ class GiftList extends Component {
     if(item) {
       const promise = item.id ? this.Gifts.updateGift(item) : this.Gifts.createGift(item);
       promise.then(item => {
-        this.state.gifts[this.state.selectedIndex] = item;
         state.gifts = this.state.gifts;
+        state.gifts[this.state.selectedIndex] = item;
         this.setState(state);
       });
     } else {
@@ -112,16 +103,32 @@ class GiftList extends Component {
     }
   }
 
+  getNewGift(listId) {
+    return {
+      id: '',
+      name: '',
+      description: '',
+      priority: false,
+      listId: listId
+    };
+  }
+
+  getListGifts(listId) {
+    this.Gifts.getListGifts(listId).then(response => {
+      if(response.length < 1) {
+        this.setState({gifts: [this.getNewGift(listId)]})
+      } else {
+        this.setState({gifts: response});
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.getListGifts(this.props.listId);
+  }
+
   componentWillReceiveProps(nextProps) {
-    if(nextProps.listId) {
-      this.Gifts.getListGifts(nextProps.listId).then(response => {
-        if(response.length < 1) {
-          this.handleAddItem();
-        } else {
-          this.setState({gifts: response});
-        }
-      });
-    }
+    this.getListGifts(nextProps.listId);
   }
 
   render() {
