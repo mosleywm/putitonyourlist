@@ -6,6 +6,7 @@ import GiftDetail from './GiftDetail';
 import List from 'material-ui/List';
 import Button from 'material-ui/Button';
 import Icon from 'material-ui/Icon';
+import _ from 'lodash';
 
 const styles = theme => ({
   container: {
@@ -29,6 +30,7 @@ class GiftList extends Component {
     super(props);
     this.state = {
       gifts: [],
+      isUpdateDisabled: true,
       open: false,
       selectedIndex: ''
     };
@@ -42,16 +44,23 @@ class GiftList extends Component {
   }
 
   handleAddItem() {
-    this.setState(prevState => ({
-      gifts: prevState.gifts.concat([this.getNewGift(this.props.listId)])
-    }));
+    this.setState(prevState => {
+      const gifts = prevState.gifts.concat([this.getNewGift(this.props.listId)]);
+      return {
+        gifts: gifts,
+        isUpdateDisabled: _.isEqual(gifts, prevState.savedGifts)
+      };
+    });
   }
 
   handleRemoveItem(index) {
     GiftService.deleteGift(this.state.gifts[index]).then(gift => {
       this.setState(prevState => {
         prevState.gifts.splice(index, 1);
-        return {gifts: prevState.gifts};
+        return {
+          gifts: prevState.gifts,
+          isUpdateDisabled: _.isEqual(prevState.gifts, prevState.savedGifts) || prevState.gifts.length < 1
+        };
       });
     });
   }
@@ -59,7 +68,10 @@ class GiftList extends Component {
   handleCheck(index, e) {
     this.setState(prevState => {
       prevState.gifts[index].priority = !prevState.gifts[index].priority;
-      return {gifts: prevState.gifts};
+      return {
+        gifts: prevState.gifts,
+        isUpdateDisabled: _.isEqual(prevState.gifts, prevState.savedGifts)
+      };
     });
   }
 
@@ -68,7 +80,10 @@ class GiftList extends Component {
     const prop = e.target.name;
     this.setState((prevState) => {
       prevState.gifts[index][prop] = val;
-      return {gifts: prevState.gifts};
+      return {
+        gifts: prevState.gifts,
+        isUpdateDisabled: _.isEqual(prevState.gifts, prevState.savedGifts)
+      };
     });
   }
 
@@ -80,7 +95,10 @@ class GiftList extends Component {
       promises.push(giftPromise);
     });
     Promise.all(promises).then(response => {
-      this.setState({gifts: response});
+      this.setState({
+        gifts: response,
+        savedGifts: response
+      });
     });
   }
 
@@ -97,9 +115,15 @@ class GiftList extends Component {
   getListGifts(listId) {
     GiftService.getListGifts(listId).then(response => {
       if(response.length < 1) {
-        this.setState({gifts: [this.getNewGift(listId)]})
+        this.setState({
+          gifts: [this.getNewGift(listId)],
+          savedGifts: [this.getNewGift(listId)]
+        });
       } else {
-        this.setState({gifts: response});
+        this.setState({
+          gifts: response,
+          savedGifts: response
+        });
       }
     });
   }
@@ -136,7 +160,12 @@ class GiftList extends Component {
           <List className={classes.listContainer} dense={true}>
             {gifts}
           </List>
-          <Button raised color="primary" type="submit" onClick={this.handleUpdateItems}>Update</Button>
+          <Button
+            raised
+            color="primary"
+            type="submit"
+            disabled={this.state.isUpdateDisabled}
+            onClick={this.handleUpdateItems}>Update</Button>
         </form>
       </div>
     );
