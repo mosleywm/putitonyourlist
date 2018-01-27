@@ -112,7 +112,7 @@ class Home extends Component {
             </FormControl>
             <Button raised color="primary" onClick={this.handleCreateList}>Create New List</Button>
             <h2>{this.state.selectedList.name}</h2>
-            <div>{this.state.selectedList.description}</div>
+            <div className={classes.sectionSmall}>{this.state.selectedList.description}</div>
             <GiftList userId={this.state.userId} listId={this.state.selectedList.id} />
         </div>
       );
