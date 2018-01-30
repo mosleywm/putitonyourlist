@@ -55,7 +55,9 @@ class GiftList extends Component {
   }
 
   handleRemoveItem(index) {
-    GiftService.deleteGift(this.state.gifts[index]).then(gift => {
+    const gift = this.state.gifts[index];
+    const promise = gift.id ? GiftService.deleteGift(this.state.gifts[index]) : Promise.resolve();
+    promise.then(res => {
       this.setState(prevState => {
         prevState.gifts.splice(index, 1);
         return {
@@ -102,7 +104,8 @@ class GiftList extends Component {
     Promise.all(promises).then(response => {
       this.setState({
         gifts: response,
-        savedGifts: response
+        savedGifts: response,
+        isUpdateDisabled: true
       });
     });
   }
@@ -127,7 +130,7 @@ class GiftList extends Component {
       } else {
         this.setState({
           gifts: response,
-          savedGifts: response
+          savedGifts: response.slice()
         });
       }
     });
