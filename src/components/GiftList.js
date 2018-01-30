@@ -38,6 +38,7 @@ class GiftList extends Component {
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.getUpdateStatus = this.getUpdateStatus.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.getNewGift = this.getNewGift.bind(this);
     this.getListGifts = this.getListGifts.bind(this);
@@ -45,10 +46,10 @@ class GiftList extends Component {
 
   handleAddItem() {
     this.setState(prevState => {
-      const gifts = prevState.gifts.concat([this.getNewGift(this.props.listId)]);
+      prevState.gifts.unshift(this.getNewGift(this.props.listId));
       return {
-        gifts: gifts,
-        isUpdateDisabled: _.isEqual(gifts, prevState.savedGifts)
+        gifts: prevState.gifts,
+        isUpdateDisabled: this.getUpdateStatus(prevState.gifts, prevState.savedGifts)
       };
     });
   }
@@ -59,7 +60,7 @@ class GiftList extends Component {
         prevState.gifts.splice(index, 1);
         return {
           gifts: prevState.gifts,
-          isUpdateDisabled: _.isEqual(prevState.gifts, prevState.savedGifts) || prevState.gifts.length < 1
+          isUpdateDisabled: this.getUpdateStatus(prevState.gifts, prevState.savedGifts)
         };
       });
     });
@@ -70,7 +71,7 @@ class GiftList extends Component {
       prevState.gifts[index].priority = !prevState.gifts[index].priority;
       return {
         gifts: prevState.gifts,
-        isUpdateDisabled: _.isEqual(prevState.gifts, prevState.savedGifts)
+        isUpdateDisabled: this.getUpdateStatus(prevState.gifts, prevState.savedGifts)
       };
     });
   }
@@ -82,9 +83,13 @@ class GiftList extends Component {
       prevState.gifts[index][prop] = val;
       return {
         gifts: prevState.gifts,
-        isUpdateDisabled: _.isEqual(prevState.gifts, prevState.savedGifts)
+        isUpdateDisabled: this.getUpdateStatus(prevState.gifts, prevState.savedGifts)
       };
     });
+  }
+
+  getUpdateStatus(gifts, savedGifts) {
+    return _.isEqual(gifts, savedGifts) || gifts.length < 1;
   }
 
   handleSubmit(e, index) {
