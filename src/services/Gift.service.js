@@ -23,6 +23,6 @@ module.exports = {
     return firebase.database().ref('gifts/' + gift.id).update(gift).then(() => gift);
   },
   deleteGift: function(gift) {
-   return firebase.database().ref('gifts/' + gift.id).remove().then(() => gift);
+    return firebase.database().ref('gifts/' + gift.id).remove().then(() => gift);
   }
 }
