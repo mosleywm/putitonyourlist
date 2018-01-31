@@ -1,21 +1,20 @@
-module.exports = {
-  getUsers: function() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(AllUsers);
-      }, 1000);
-    });
-  },
-  getUser: function(id) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve (AllUsers.filter(user => {
-          return user.id === id;
-        }));
-      })
-    });
-  }
-}
+const getUsers = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(AllUsers);
+    }, 1000);
+  });
+};
+
+const getUser = id => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve (AllUsers.filter(user => {
+        return user.id === id;
+      }));
+    })
+  });
+};
 
 const AllUsers = [
   {
@@ -26,3 +25,5 @@ const AllUsers = [
     name: 'Keegan Mosley'
   }
 ];
+
+export {getUsers, getUser};

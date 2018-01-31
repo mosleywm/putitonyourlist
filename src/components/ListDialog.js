@@ -4,7 +4,7 @@ import Dialog, {DialogActions, DialogTitle, DialogContent} from 'material-ui/Dia
 import Button from 'material-ui/Button';
 import {FormControl, FormControlLabel} from 'material-ui/Form';
 import TextField from 'material-ui/TextField';
-import Lists from '../services/List.service';
+import * as Lists from '../services/List.service';
 import Checkbox from 'material-ui/Checkbox';
 
 const styles = theme => ({
