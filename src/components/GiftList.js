@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import GiftService from '../services/Gift.service';
+import * as GiftService from '../services/Gift.service';
 import GiftDetail from './GiftDetail';
 import List from 'material-ui/List';
 import Button from 'material-ui/Button';
