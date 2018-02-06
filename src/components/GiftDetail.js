@@ -20,12 +20,7 @@ const styles = theme => ({
   // TODO: should be a core style
   secondaryButton: {
     'min-width': 'auto',
-    'border-radius': 0,
-    color: theme.palette.common.lightBlack,
-    'background-color': theme.palette.common.faintBlack,
-    '&:hover': {
-      'background-color': theme.palette.common.minBlack
-    }
+    'border-radius': 0
   }
 });
 
@@ -58,7 +53,7 @@ const GiftDetail = (props) => (
         onChange={(e) => props.handleInputChange(props.index, e)} />
     </CardContent>
     <div className={props.classes.cardContentContainer}>
-      <Button className={props.classes.secondaryButton} onClick={() => props.handleRemoveItem(props.index)}>
+      <Button raised color="secondary" className={props.classes.secondaryButton} onClick={() => props.handleRemoveItem(props.index)}>
         <DeleteIcon />
       </Button>
     </div>

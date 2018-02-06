@@ -41,12 +41,12 @@ class Home extends Component {
     };
     this.Users = Users;
     this.Lists = Lists;
-    this.handleRequestClose = this.handleRequestClose.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     this.handleCreateList = this.handleCreateList.bind(this);
     this.handleListSelect = this.handleListSelect.bind(this);
   }
 
-  handleRequestClose(list) {
+  handleClose(list) {
     const state = {open: false};
     if(list) {
       state.lists = this.state.lists.concat([list]);
@@ -123,7 +123,7 @@ class Home extends Component {
         <div className={classes.container}>
           <h3>My Lists</h3>
           {content}
-          <ListDialog open={this.state.open} onRequestClose={this.handleRequestClose} userid={this.state.userId} />
+          <ListDialog open={this.state.open} onClose={this.handleClose} userid={this.state.userId} />
         </div>
       </div>
     );

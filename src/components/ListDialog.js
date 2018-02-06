@@ -40,12 +40,12 @@ class ListDialog extends Component {
     const list = Object.assign({userId: this.props.userid}, this.state);
     if(shouldSave) {
       this.Lists.createList(list).then(list => {
-        this.props.onRequestClose(list);
+        this.props.onClose(list);
         this.clearState();
       });
       return;
     }
-    this.props.onRequestClose(false);
+    this.props.onClose(false);
     this.clearState();
   }
 
@@ -60,7 +60,7 @@ class ListDialog extends Component {
     const {classes, ...other} = this.props;
 
     return (
-      <Dialog {...other} ignoreBackdropClick={true}>
+      <Dialog {...other} disableBackdropClick={true}>
         <form onSubmit={this.handleClose.bind(this, true)}>
           <DialogTitle>Create New List</DialogTitle>
           <DialogContent>
@@ -91,7 +91,7 @@ class ListDialog extends Component {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button raised color="accent" onClick={this.handleClose.bind(this, false)}>Cancel</Button>
+            <Button raised color="secondary" onClick={this.handleClose.bind(this, false)}>Cancel</Button>
             <Button raised color="primary" type="submit">Save</Button>
           </DialogActions>
         </form>

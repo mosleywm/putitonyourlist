@@ -6,12 +6,12 @@ import registerServiceWorker from './registerServiceWorker';
 import * as firebase from 'firebase';
 
 var config = {
-  apiKey: "AIzaSyBMqKeS7YCUl-Ze_jYEp9QhDEJfxvajJ1I",
-  authDomain: "putitonyourlist.firebaseapp.com",
-  databaseURL: "https://putitonyourlist.firebaseio.com",
-  projectId: "putitonyourlist",
-  storageBucket: "putitonyourlist.appspot.com",
-  messagingSenderId: "613969521910"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_NAME + ".firebaseapp.com",
+  databaseURL: "https://" + process.env.REACT_APP_FIREBASE_NAME + ".firebaseio.com",
+  projectId: process.env.REACT_APP_FIREBASE_NAME,
+  storageBucket: process.env.REACT_APP_FIREBASE_NAME + ".appspot.com",
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID
 };
 firebase.initializeApp(config);
 
