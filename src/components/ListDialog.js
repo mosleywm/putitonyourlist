@@ -18,6 +18,7 @@ class ListDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPublic: false,
       name: '',
       description: ''
     };
@@ -52,6 +53,7 @@ class ListDialog extends Component {
 
   clearState() {
     this.setState({
+      isPublic: false,
       name: '',
       description: ''
     });
