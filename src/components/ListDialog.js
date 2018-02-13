@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Dialog, {DialogActions, DialogTitle, DialogContent} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
@@ -99,5 +100,11 @@ class ListDialog extends Component {
     );
   }
 }
+
+ListDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  userid: PropTypes.string.isRequired
+};
 
 export default withStyles(styles)(ListDialog);
