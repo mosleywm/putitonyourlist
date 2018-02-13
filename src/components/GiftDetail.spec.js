@@ -51,17 +51,20 @@ describe('(Component) GiftDetail', () => {
   it('should render gift priority', () => {
     const wrapper = mount(component);
     expect(wrapper.find('input [name="priority"]')).toBeChecked();
+    wrapper.unmount();
   });
 
   it('should call update checkbox functions', () => {
     const wrapper = mount(component);
     wrapper.find('input [name="priority"]').simulate('change');
     expect(handleCheck).toHaveBeenCalledWith(INDEX, expect.anything());
+    wrapper.unmount();
   });
 
   it('should call remove function', () => {
     const wrapper = mount(component);
     wrapper.find('button').simulate('click');
     expect(handleRemoveItem).toHaveBeenCalledWith(INDEX);
+    wrapper.unmount();
   });
 });
