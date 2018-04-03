@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Dialog, {DialogActions, DialogTitle, DialogContent} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
@@ -17,6 +18,7 @@ class ListDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPublic: false,
       name: '',
       description: ''
     };
@@ -51,6 +53,7 @@ class ListDialog extends Component {
 
   clearState() {
     this.setState({
+      isPublic: false,
       name: '',
       description: ''
     });
@@ -91,7 +94,7 @@ class ListDialog extends Component {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button raised color="secondary" onClick={this.handleClose.bind(this, false)}>Cancel</Button>
+            <Button raised color="secondary" type="button" onClick={this.handleClose.bind(this, false)}>Cancel</Button>
             <Button raised color="primary" type="submit">Save</Button>
           </DialogActions>
         </form>
@@ -99,5 +102,11 @@ class ListDialog extends Component {
     );
   }
 }
+
+ListDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  userid: PropTypes.string.isRequired
+};
 
 export default withStyles(styles)(ListDialog);

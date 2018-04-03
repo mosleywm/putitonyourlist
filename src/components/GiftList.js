@@ -68,7 +68,7 @@ class GiftList extends Component {
     });
   }
 
-  handleCheck(index, e) {
+  handleCheck(index) {
     this.setState(prevState => {
       prevState.gifts[index].priority = !prevState.gifts[index].priority;
       return {
@@ -94,7 +94,7 @@ class GiftList extends Component {
     return _.isEqual(gifts, savedGifts) || gifts.length < 1;
   }
 
-  handleSubmit(e, index) {
+  handleSubmit(e) {
     e.preventDefault();
     const promises = [];
     this.state.gifts.forEach(gift => {
@@ -104,7 +104,7 @@ class GiftList extends Component {
     Promise.all(promises).then(response => {
       this.setState({
         gifts: response,
-        savedGifts: response,
+        savedGifts: this.copyState(response),
         isUpdateDisabled: true
       });
     });
@@ -130,10 +130,14 @@ class GiftList extends Component {
       } else {
         this.setState({
           gifts: response,
-          savedGifts: response.slice()
+          savedGifts: this.copyState(response)
         });
       }
     });
+  }
+
+  copyState(state) {
+    return JSON.parse(JSON.stringify(state));
   }
 
   componentDidMount() {
@@ -172,8 +176,7 @@ class GiftList extends Component {
             raised
             color="primary"
             type="submit"
-            disabled={this.state.isUpdateDisabled}
-            onClick={this.handleUpdateItems}>Update</Button>
+            disabled={this.state.isUpdateDisabled}>Update</Button>
         </form>
       </div>
     );

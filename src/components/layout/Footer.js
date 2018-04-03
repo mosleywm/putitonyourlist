@@ -19,7 +19,7 @@ class Footer extends Component {
     const classes = this.props.classes;
     return (
       <footer className={classes.footer}>
-        <p className={classes.footerContent}>&copy; 1999-2017 - Put It On Your List</p>
+        <p className={classes.footerContent}>&copy; 1999-2018 - Put It On Your List</p>
       </footer>
     )
   }
