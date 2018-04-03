@@ -104,7 +104,7 @@ class GiftList extends Component {
     Promise.all(promises).then(response => {
       this.setState({
         gifts: response,
-        savedGifts: response,
+        savedGifts: this.copyState(response),
         isUpdateDisabled: true
       });
     });
@@ -130,10 +130,14 @@ class GiftList extends Component {
       } else {
         this.setState({
           gifts: response,
-          savedGifts: response.slice()
+          savedGifts: this.copyState(response)
         });
       }
     });
+  }
+
+  copyState(state) {
+    return JSON.parse(JSON.stringify(state));
   }
 
   componentDidMount() {
