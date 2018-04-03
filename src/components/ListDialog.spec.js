@@ -83,7 +83,6 @@ describe('(Component) ListDialog', () => {
     // https://github.com/facebook/jest/issues/2157
     const flush = Promise.resolve();
     flush.then(() => {
-      debugger;
       expect(createList).toHaveBeenCalledWith(PARSED_LIST);
       expect(onClose).toHaveBeenLastCalledWith(PARSED_LIST);
       expect(wrapper.state()).toEqual(NULL_LIST_STATE);
