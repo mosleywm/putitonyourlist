@@ -176,8 +176,7 @@ class GiftList extends Component {
             raised
             color="primary"
             type="submit"
-            disabled={this.state.isUpdateDisabled}
-            onClick={this.handleUpdateItems}>Update</Button>
+            disabled={this.state.isUpdateDisabled}>Update</Button>
         </form>
       </div>
     );
