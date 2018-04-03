@@ -68,7 +68,7 @@ class GiftList extends Component {
     });
   }
 
-  handleCheck(index, e) {
+  handleCheck(index) {
     this.setState(prevState => {
       prevState.gifts[index].priority = !prevState.gifts[index].priority;
       return {
@@ -94,7 +94,7 @@ class GiftList extends Component {
     return _.isEqual(gifts, savedGifts) || gifts.length < 1;
   }
 
-  handleSubmit(e, index) {
+  handleSubmit(e) {
     e.preventDefault();
     const promises = [];
     this.state.gifts.forEach(gift => {
