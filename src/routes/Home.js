@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import {Redirect} from 'react-router-dom';
 import * as Users from '../services/User.service';
 import * as Lists from '../services/List.service';
 import GiftList from '../components/GiftList';
@@ -110,7 +109,7 @@ class Home extends Component {
               {lists}
             </Select>
             </FormControl>
-            <Button raised color="primary" onClick={this.handleCreateList}>Create New List</Button>
+            <Button variant="raised" color="primary" onClick={this.handleCreateList}>Create New List</Button>
             <h2>{this.state.selectedList.name}</h2>
             <div className={classes.sectionSmall}>{this.state.selectedList.description}</div>
             <GiftList userId={this.state.userId} listId={this.state.selectedList.id} />

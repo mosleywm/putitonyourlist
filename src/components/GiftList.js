@@ -166,14 +166,14 @@ class GiftList extends Component {
     return (
       <div className={classes.container}>
         <form onSubmit={this.handleSubmit}>
-          <Button raised type="button" onClick={this.handleAddItem}>
+          <Button variant="raised" type="button" onClick={this.handleAddItem}>
             <Icon className={classes.flushLeft}>add</Icon>Add Item
           </Button>
           <List className={classes.listContainer} dense={true}>
             {gifts}
           </List>
           <Button
-            raised
+            variant="raised"
             color="primary"
             type="submit"
             disabled={this.state.isUpdateDisabled}>Update</Button>

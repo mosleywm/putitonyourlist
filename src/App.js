@@ -6,8 +6,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Login from './routes/Login';
+import SignUp from './routes/SignUp';
+import Logout from './routes/Logout';
 import Home from './routes/Home';
 import Profile from './routes/Profile';
+import AuthWrapper from './components/AuthWrapper';
 
 const styles = theme => ({
   container: {
@@ -19,7 +22,6 @@ const styles = theme => ({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {isLoggedIn: false}
   }
 
   render() {
@@ -28,12 +30,14 @@ class App extends Component {
       <Router>
         <div>
           <Header />
-            <div className={classes.container}>
-              <ProtectedRoute path='' component={Home}/>
-              <ProtectedRoute path='/:id' component={Home}/>
-              <Route path='/login' component={Login}/>
-              <ProtectedRoute path='/profile' component={Profile}/>
-            </div>
+          <div className={classes.container}>
+            <Route path='/login' component={Login}/>
+            <Route path='/signup' component={SignUp} />
+            <Route path="/logout" component={Logout} />
+            <ProtectedRoute exact path='/' component={Home} isLoggedIn={this.props.isLoggedIn} />
+            <ProtectedRoute path='/lists/:id' component={Home} isLoggedIn={this.props.isLoggedIn} />
+            <ProtectedRoute path='/profile' component={Profile} isLoggedIn={this.props.isLoggedIn} />
+          </div>
           <Footer />
         </div>
       </Router>
@@ -42,7 +46,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
-export default withStyles(styles)(App);
+export default AuthWrapper(withStyles(styles)(App));

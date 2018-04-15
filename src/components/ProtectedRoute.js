@@ -1,20 +1,22 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Redirect, Route} from 'react-router-dom';
 
-class ProtectedRoute extends Component {
-  render () {
-    return !this.props.isLoggedIn ? (
-      <Route exact path={this.props.path} component={this.props.component} />
+const ProtectedRoute = ({component: Component, ...rest, isLoggedIn}) => (
+  <Route
+    {...rest}
+    render={props => {
+      return isLoggedIn ? (
+      <Component {...props} />
     ) : (
       <Redirect to="/login" />
-    );
-  }
-}
+    )}}
+  />
+);
 
 ProtectedRoute.propTypes = {
-  classes: PropTypes.object.isRequired,
-  component: PropTypes.object.isRequired
+  path: PropTypes.string.isRequired,
+  component: PropTypes.func.isRequired
 };
 
 export default ProtectedRoute;

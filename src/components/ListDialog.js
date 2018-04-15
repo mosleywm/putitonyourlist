@@ -94,8 +94,8 @@ class ListDialog extends Component {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button raised color="secondary" type="button" onClick={this.handleClose.bind(this, false)}>Cancel</Button>
-            <Button raised color="primary" type="submit">Save</Button>
+            <Button variant="raised" color="secondary" type="button" onClick={this.handleClose.bind(this, false)}>Cancel</Button>
+            <Button variant="raised" color="primary" type="submit">Save</Button>
           </DialogActions>
         </form>
       </Dialog>

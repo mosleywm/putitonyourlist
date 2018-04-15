@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Card, {CardContent} from 'material-ui/Card';
@@ -7,7 +7,6 @@ import Checkbox from 'material-ui/Checkbox';
 import {FormControlLabel} from 'material-ui/Form';
 import Button from 'material-ui/Button';
 import DeleteIcon from 'material-ui-icons/Delete';
-import Input from 'material-ui/Input';
 
 const styles = theme => ({
   cardContentContainer: {
@@ -39,6 +38,7 @@ const GiftDetail = (props) => (
         control={
           <Checkbox
             name="priority"
+            color="primary"
             checked={props.gift.priority}
             onChange={(e) => props.handleCheck(props.index, e)} />
         }
@@ -53,7 +53,7 @@ const GiftDetail = (props) => (
         onChange={(e) => props.handleInputChange(props.index, e)} />
     </CardContent>
     <div className={props.classes.cardContentContainer}>
-      <Button raised color="secondary" className={props.classes.secondaryButton} onClick={() => props.handleRemoveItem(props.index)}>
+      <Button variant="raised" color="secondary" className={props.classes.secondaryButton} onClick={() => props.handleRemoveItem(props.index)}>
         <DeleteIcon />
       </Button>
     </div>
