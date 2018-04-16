@@ -1,23 +1,14 @@
 import React, {Component} from 'react';
-import * as AuthService from '../services/auth.service';
+import * as AuthService from '../services/Auth.service';
 import {Redirect} from 'react-router-dom';
 
 class Logout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoggedOut: false
-    };
-  }
-
   componentDidMount() {
-    AuthService.logout().then(res => {
-      this.setState({isLoggedOut: true});
-    });
+    AuthService.logout();
   }
 
   render() {
-    return !this.state.isLoggedOut ? (
+    return this.props.isLoggedIn ? (
       <div>You are being logged out.</div>
     ) : (
       <Redirect to="/login" />

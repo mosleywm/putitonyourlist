@@ -6,7 +6,7 @@ import Card, {CardHeader, CardContent, CardActions} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import CustomLink from '../components/elements/CustomLink';
-import * as AuthService from '../services/auth.service';
+import * as AuthService from '../services/Auth.service';
 
 const styles = theme => ({
   container: {
@@ -43,19 +43,13 @@ class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    AuthService.signIn(this.state.email, this.state.password).then(res => {
-      this.setState({redirect: true});
-    }).catch(err => {
-      // TODO handle errors
-    });
+    AuthService.signIn(this.state.email, this.state.password);
   }
 
   render() {
     const classes = this.props.classes;
-
-    return this.state.redirect ? (
-        <Redirect to="/" />
-      ) : (
+    const redirect = (<Redirect to="/" />);
+    const form = (
       <form
         className={classes.container}
         onSubmit={(event) => this.handleSubmit(event)}>
@@ -96,6 +90,8 @@ class Login extends Component {
         </Card>
       </form>
     );
+
+    return this.props.isLoggedIn ? redirect : form;
   }
 }
 

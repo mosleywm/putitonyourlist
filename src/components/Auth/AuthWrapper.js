@@ -18,7 +18,7 @@ const AuthWrapper = (Component) => {
           isLoggedIn = true;
         }
         this.setState({
-          isLoggedIn: isLoggedIn,
+          isLoggedIn,
           isAuthState: true
         });
       });
@@ -30,6 +30,6 @@ const AuthWrapper = (Component) => {
       );
     }
   }
-}
+};
 
 export default AuthWrapper;

@@ -3,7 +3,7 @@ import {withStyles} from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
 import Card, {CardHeader, CardContent, CardActions} from 'material-ui/Card';
 import Button from 'material-ui/Button';
-import * as AuthService from '../services/auth.service';
+import * as AuthService from '../services/Auth.service';
 import {Redirect} from 'react-router-dom';
 
 const styles = theme => ({
@@ -36,17 +36,13 @@ class SignUp extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    AuthService.createUser(this.state.email, this.state.password).then(res => {
-      this.setState({redirect: true});
-    }).catch(err => {
-      // TODO handle errors
-    });
+    AuthService.createUser(this.state.email, this.state.password);
   }
 
   render() {
     const classes = this.props.classes;
-    return this.state.redirect ? (
-      <Redirect exact path="/" />
+    return this.props.isLoggedIn ? (
+      <Redirect to="/" />
     ) : (
       <form onSubmit={(event) => this.handleSubmit(event)} className={classes.container}>
         <Card>

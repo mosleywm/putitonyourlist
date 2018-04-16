@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -9,8 +9,7 @@ import Login from './routes/Login';
 import SignUp from './routes/SignUp';
 import Logout from './routes/Logout';
 import Home from './routes/Home';
-import Profile from './routes/Profile';
-import AuthWrapper from './components/AuthWrapper';
+import AuthWrapper from './components/Auth/AuthWrapper';
 
 const styles = theme => ({
   container: {
@@ -19,30 +18,23 @@ const styles = theme => ({
   }
 });
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const classes = this.props.classes;
-    return (
-      <Router>
-        <div>
-          <Header />
-          <div className={classes.container}>
-            <Route path='/login' component={Login}/>
-            <Route path='/signup' component={SignUp} />
-            <Route path="/logout" component={Logout} />
-            <ProtectedRoute exact path='/' component={Home} isLoggedIn={this.props.isLoggedIn} />
-            <ProtectedRoute path='/lists/:id' component={Home} isLoggedIn={this.props.isLoggedIn} />
-            <ProtectedRoute path='/profile' component={Profile} isLoggedIn={this.props.isLoggedIn} />
-          </div>
-          <Footer />
+function App(props) {
+  const classes = props.classes;
+  return (
+    <Router>
+      <div>
+        <Header isLoggedIn={props.isLoggedIn} />
+        <div className={classes.container}>
+          <Route path='/login' component={() => <Login isLoggedIn={props.isLoggedIn} />} />
+          <Route path='/signup' component={() => <SignUp isLoggedIn={props.isLoggedIn} />} />
+          <Route path="/logout" component={() => <Logout isLoggedIn={props.isLoggedIn} />} />
+          <ProtectedRoute exact path='/' component={Home} isLoggedIn={props.isLoggedIn} />
+          <ProtectedRoute path='/lists/:id' component={Home} isLoggedIn={props.isLoggedIn} />
         </div>
-      </Router>
-    );
-  }
+        <Footer />
+      </div>
+    </Router>
+  );
 }
 
 App.propTypes = {
