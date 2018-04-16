@@ -14,15 +14,13 @@ const styles = theme => ({
   }
 });
 
-class Footer extends Component {
-  render() {
-    const classes = this.props.classes;
-    return (
-      <footer className={classes.footer}>
-        <p className={classes.footerContent}>&copy; 1999-2018 - Put It On Your List</p>
-      </footer>
-    )
-  }
+function Footer(props) {
+  const classes = props.classes;
+  return (
+    <footer className={classes.footer}>
+      <p className={classes.footerContent}>&copy; 1999-2018 - Put It On Your List</p>
+    </footer>
+  );
 }
 
 Footer.propTypes = {
