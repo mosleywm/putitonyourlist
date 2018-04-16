@@ -8,7 +8,7 @@ import {Redirect} from 'react-router-dom';
 
 const styles = theme => ({
   container: {
-    margin: '100px auto',
+    margin: '50px auto',
     padding: '16px',
     'max-width': '480px',
     'min-width': '320px',

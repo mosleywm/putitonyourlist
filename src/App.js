@@ -13,8 +13,14 @@ import AuthWrapper from './components/Auth/AuthWrapper';
 
 const styles = theme => ({
   container: {
+    display: 'flex',
+    'flex-direction': 'column',
+    height: '100%'
+  },
+  main: {
     'max-width': '980px',
-    margin: 'auto'
+    margin: 'auto',
+    'flex-grow': 2
   }
 });
 
@@ -22,9 +28,9 @@ function App(props) {
   const classes = props.classes;
   return (
     <Router>
-      <div>
+      <div className={classes.container}>
         <Header isLoggedIn={props.isLoggedIn} />
-        <div className={classes.container}>
+        <div className={classes.main}>
           <Route path='/login' component={() => <Login isLoggedIn={props.isLoggedIn} />} />
           <Route path='/signup' component={() => <SignUp isLoggedIn={props.isLoggedIn} />} />
           <Route path="/logout" component={() => <Logout isLoggedIn={props.isLoggedIn} />} />
